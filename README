@@ -1,0 +1,70 @@
+README
+
+This file is for documentation of the code
+Last Updated: 4/17/2025
+
+also function contracts
+and any relations between any files
+what is called in app.py
+what is used in app.py
+how helper functions are defined and where they are called
+
+<Libraries>
+flask to host the web application
+matplotlib to create the plots
+numpy to create and use numpy arrays (helpful for slicing and applying operations)
+
+<Files>
+
+<templates/index.html>
+Implements the layout of the webpage. Contains css code for style and html code
+to add interactive elements such as buttons and text boxes.
+
+<app.py>
+Contains main function that:
+- Initiates a Flask application where the plots will be hosted.
+- Takes in input values from the user for the greenhouse gases.
+- Creates the emissions vectors for the three greenhouse gases.
+- Calls functions to plot the graphs and renders the plots.
+
+<co2e.py>
+Defines function that calculates the CO2 equivalent plot based on the co2e
+metric value selected.
+
+<get_agwp_agtp_plots.py>
+Contains helper functions that creates the co2, ch4, and no2 plots for both
+AGWP and AGTP values. Each function returns the plots for the 3 greenhouse gases.
+
+<import_data.py>
+Defines function to take values from .txt files and put them into a
+numpy array.
+
+<intervention_emissions.py>
+Defines function to create plot for Intervention Emissions graph.
+
+<plot_agtp.py>
+Defines function to create plot for Intervention Temp Response graph.
+Takes in the plots created in app.py and returns the url of the plotted graph.
+
+<plot_agwp.py>
+Defines function to create plot for Intervention AGWP graph.
+Takes in the plots created in app.py and returns the url of the plotted graph.
+
+<scenario_intervention.py>
+Defines function to create plot for the Scenario with Intervention graph.
+The function does the following:
+- Determines which SSP scenario to plot
+- Gets historical data points to add to plot
+- Create and plot the intervention line as well as the co2e line (if a
+  metric is selected).
+
+<test.py>
+File used for incremental testing of any python code (allows for easier
+testing to see outputs directly in terminal)
+Temporary file for development - not meant to be kept in folder
+
+<ghc_metrics folder>
+Contains AGWP and AGTP values for CO2, N2O, and CH4
+
+<ssp_data folder>
+Contains ssp values for the scenario intervention graph, as well as historical data points
