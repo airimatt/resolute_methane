@@ -24,13 +24,13 @@ def index():
     duration = 0
     decay_type = ""
     total_lifetime = 1
-    halflife, co2_capture = 1.0, 1.0
+    halflife, co2_capture_yr1 = 1.0, 1.0
 
     if request.method == 'POST':
 
         # Get intervention method
         intervention = request.form.get('Intervention')
-        co2_val, ch4_val, n2o_val, tch4_per_yr = 0.0, 0.0, 0.0, 1.0
+        co2_val, ch4_val, n2o_val, tch4_yr = 0.0, 0.0, 0.0, 1.0
 
         # Get metric value (for co2e)
         metric = request.form.get('Metric')
@@ -56,31 +56,30 @@ def index():
             dur = request.form.get('duration_value', '')
             duration = int(dur) if dur else 0
             yr = request.form.get('tch4_yr', '')
-            tch4_per_yr = float(yr) if yr else 0.0
-            ch4_emissions[:duration] = tch4_per_yr if tch4_per_yr else 1.0
+            tch4_yr = float(yr) if yr else 0.0
+            ch4_emissions[:duration] = tch4_yr if tch4_yr else 1.0
         else:
-            # intervention is co2_capture
-            co2_capture = float(request.form.get('co2_capture_year_1'))
-            if not co2_capture:
-                co2_capture = 1.0
+            # intervention is co2_capture_yr1
+            co2_capture_yr1 = request.form.get('co2_capture_yr1')
+            co2_capture_yr1 = float(co2_capture_yr1) if co2_capture_yr1 else 1.0
 
             # Get decay type and calculate emissions based on decay type
             decay_type = request.form.get('CO2_Decay_Type')
             if decay_type == "linear_decay":
                 total_lifetime = int(request.form.get('total_lifetime', 50))
-                emission_rate = co2_capture / total_lifetime
-                co2_emissions[0] = -co2_capture
+                emission_rate = co2_capture_yr1 / total_lifetime
+                co2_emissions[0] = -co2_capture_yr1
                 co2_emissions[1:total_lifetime + 1] = round(emission_rate, 2)
             else:
                 # Get halflife (default to 1.0)
                 halflife = float(request.form.get('halflife'))
                 if not halflife:
                     halflife = 1.0
-                co2_emissions[0] = -co2_capture
+                co2_emissions[0] = -co2_capture_yr1
                 if halflife > 0:  # Avoid division by zero
                     lambda_val = np.log(2) / halflife
                     for t in range(1, time):
-                        co2_emissions[t] = co2_capture * np.exp(-lambda_val * t) * lambda_val
+                        co2_emissions[t] = co2_capture_yr1 * np.exp(-lambda_val * t) * lambda_val
 
         # Get ssp scenario (set default value to "SSP1-1.9")
         scenario = request.form.get('scenarioSelect')
@@ -111,9 +110,9 @@ def index():
                                plot_url3=scenario_plot_url,
                                plot_url4=intervention_emissions_plot_url,
                                co2_value=co2_val, ch4_value=ch4_val, n2o_value=n2o_val,
-                               tch4_per_yr=tch4_per_yr, duration=duration, decay_type=decay_type,
+                               tch4_yr=tch4_yr, duration=duration, decay_type=decay_type,
                                total_lifetime=total_lifetime, halflife=halflife,
-                               co2_capture=co2_capture,
+                               co2_capture_yr1=co2_capture_yr1,
                                scenario=scenario, intervention_start=intervention_start,
                                agtp_net_plot=agtp_net_plot, co2e_plot=co2e_plot,
                                metric=metric)
@@ -122,7 +121,7 @@ def index():
 
         # Handle GET requests (initial page load)
         co2_val, ch4_val, n2o_val = 1.0, 1.0, 1.0
-        co2_capture, tch4_per_yr = 1.0, 1.0
+        tch4_yr = 1.0
         scenario = "SSP1-1.9"
         intervention_start = 2024
         metric = "none"
@@ -144,7 +143,9 @@ def index():
                                plot_url3=scenario_plot_url,
                                plot_url4=intervention_emissions_plot_url,
                                co2_value=co2_val, ch4_value=ch4_val, n2o_value=n2o_val,
-                               co2_capture=co2_capture, tch4_per_yr=tch4_per_yr,
+                               tch4_yr=tch4_yr, duration=duration, decay_type=decay_type,
+                               total_lifetime=total_lifetime, halflife=halflife,
+                               co2_capture_yr1=co2_capture_yr1,
                                scenario=scenario, intervention_start=intervention_start,
                                agtp_net_plot=agtp_net_plot, co2e_plot=co2e_plot,
                                metric=metric)

@@ -199,7 +199,7 @@
                 <br>
                 <div id="co2CaptureInputs" class="radio-group">
                     <label for="co2_capture_year_1">CO2 capture in year 1 </label>
-                    <input type="number" name="co2_capture_year_1" value="{{ half_life }}">
+                    <input type="number" name="co2_capture_year_1" value="{{ co2_capture_yr1 }}">
                     <br>
                     <input type="radio" id="linear_decay" name="CO2_Decay_Type" value="linear_decay"
                     {% if decay_type == "linear_decay" %}checked{% endif %}>
