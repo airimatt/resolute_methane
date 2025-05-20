@@ -95,9 +95,8 @@ def index():
         agtp_plot_url, co2e_plot = plot_agtp_lines(agtp_co2_plot, agtp_ch4_plot, agtp_n2o_plot, agwp_net_plot, agtp_net_plot, metric)
 
         # Get intervention start year (default to 2024)
-        intervention_start = int(request.form.get('year_intervention_start'))
-        if not intervention_start:
-            intervention_start = 2024
+        intervention_start = request.form.get('year_intervention_start')
+        intervention_start = int(intervention_start) if intervention_start else 2024
 
         # Generate plot_url for scenario with intervention plot and interventions emissions plot
         scenario_plot_url = plot_scenario_intervention(scenario, intervention_start, agtp_net_plot, co2e_plot, metric)
@@ -121,6 +120,7 @@ def index():
 
         # Handle GET requests (initial page load)
         co2_val, ch4_val, n2o_val = 1.0, 1.0, 1.0
+        intervention = "manual"
         tch4_yr = 1.0
         scenario = "SSP1-1.9"
         intervention_start = 2024
@@ -139,7 +139,8 @@ def index():
         intervention_emissions_plot_url = plot_intervention_emissions(co2_emissions, ch4_emissions, n2o_emissions)
 
         # Render the results with all plot URLs (necessary for the values to be available in the html file)
-        return render_template('index.html', plot_url=agwp_plot_url, plot_url2=agtp_plot_url,
+        return render_template('index.html', intervention=intervention,
+                               plot_url=agwp_plot_url, plot_url2=agtp_plot_url,
                                plot_url3=scenario_plot_url,
                                plot_url4=intervention_emissions_plot_url,
                                co2_value=co2_val, ch4_value=ch4_val, n2o_value=n2o_val,

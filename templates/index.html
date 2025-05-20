@@ -1,334 +1,307 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
 
-    .radio-group {
-        margin-left: 28px; /* Adjust indentation */
-    }
+        .top-display-panel {
+            background-color: #e3eff1;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
 
-    .radio-subgroup {
-        margin-left: 50px; /* Adjust indentation */
-    }
+        .top-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    input[type="number"] {
-        width: 60px; /* Adjust as needed */
-        max-width: 100px; /* Prevents stretching */
-        /* padding: 5px; */
-        text-align: center; /* Optional: Centers the numbers */
-    }
+        .top-controls label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-    .slider {
-        -webkit-appearance: none;
-        width: 80%;
-        height: 3px;
-        background: #252525;
-        outline: none;
-        opacity: 0.5;
-        -webkit-transition: .2s;
-        transition: opacity .2s;
-    }
+        .tabs-section {
+            background-color: #e3f2e1;
+            padding: 10px;
+            border-radius: 10px;
+        }
 
-    .slider:hover {
-        opacity: 1;
-    }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
 
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 15px; /* Adjust size as needed */
-        height: 15px; /* Adjust size as needed */
-        background: #7fb0b7;
-        cursor: pointer;
-        border-radius: 50%; /* Make it a circle */
-    }
+        .tab-buttons button {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            background-color: #cbeac1;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    .slider::-moz-range-thumb {
-        width: 15px; /* Adjust size as needed */
-        height: 15px; /* Adjust size as needed */
-        background: #7fb0b7;
-        cursor: pointer;
-        border-radius: 50%; /* Make it a circle */
-    }
+        .tab-content {
+            display: none;
+        }
 
-    .container {
-        display: flex; /* Enables side-by-side layout */
-        align-items: flex-start; /* Aligns items to the top */
-        gap: 20px; /* Adds space between the intervention section and the graphs */
-    }
+        .tab-content.active {
+            display: block;
+        }
 
-    .intervention-section {
-        background-color: #d4f3cb; /* Light green */
-        border-radius: 10px; /* Rounded corners */
-        padding: 10px; /* Spacing inside the box */
-        margin-bottom: 15px; /* Space between sections */
-        border: 1px solid #b9d8b2; /* Subtle border */
-        min-width: 250px; /* Ensures it doesn’t shrink too much */
-        width: 350px; /* Only as wide as content */
-    }
+        .tab-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 2fr;
+            gap: 20px;
+        }
 
-    .metrics-box {
-        background-color: #d4f3cb; /* Light green */
-        border-radius: 10px; /* Rounded corners */
-        padding: 10px; /* Spacing inside the box */
-        margin-bottom: 15px; /* Space between sections */
-        border: 1px solid #b9d8b2; /* Subtle border */
-        min-width: 250px; /* Ensures it doesn’t shrink too much */
-        width: 450px; /* Only as wide as content */
-    }
-    .metrics-box label {
-        display: block;
-        margin-bottom: 5px;
-    }
-    .metrics-box input[type="checkbox"] {
-        margin-right: 5px;
-    }
-    .metrics-box input[type="radio"] {
-        margin-right: 5px;
-    }
+        .panel-box {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px;
+        }
 
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 3px;
+            background: #252525;
+            outline: none;
+            opacity: 0.5;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            margin-right: 10px;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #7fb0b7;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            background: #7fb0b7;
+            cursor: pointer;
+            border-radius: 50%;
+        }
 
-    .graphs {
-        display: grid;
-        grid-template-rows: auto auto 1fr; /* Adjust grid rows */
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
+        .slider-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr 50px;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
 
-    .graphs img:nth-child(1),
-    .graphs img:nth-child(2) {
-        grid-column: 1;
-    }
+        input[type="number"] {
+            width: 60px;
+            max-width: 100px;
+            text-align: center;
+        }
+        .radio-group {
+            margin-left: 28px;
+        }
+        .radio-subgroup {
+            margin-left: 50px;
+        }
+        .value-display {
+            display: inline-block;
+            width: 30px;
+            text-align: right;
+        }
 
-    .graphs img:nth-child(3) {
-        grid-column: 2;
-        grid-row: 2 / span 2;
-        width: 120%;
-        height: auto;
-        margin-top: 0; /* Remove top margin */
-        padding-top: 0; /* Remove top padding */
-    }
+        .hidden {
+            display: none;
+        }
 
-    .graphs .dropdown-container {
-        grid-column: 2;
-        grid-row: 1;
-        align-self: end;
-        display: flex;
-        flex-direction: column; /* Keep column for label and input stacking */
-        width: fit-content;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-
-    .graphs .dropdown-container label {
-        margin-bottom: 2px;
-        display: flex; /* Make labels flex containers */
-        align-items: center; /* Align items vertically in labels */
-    }
-
-    .graphs .dropdown-container label select,
-    .graphs .dropdown-container label input[type="number"] {
-        margin-left: 5px; /* Add space between label text and input */
-    }
-
-    .graphs img {
-        width: 100%; /* Ensures responsiveness */
-        max-width: 600px; /* Prevents them from being too large */
-        height: auto;
-    }
-
-    </style>
-</head>
+        </style>
+    </head>
 
 <body>
-    <h1>Interactive Line Plot</h1>
-
-    <!-- <h2>Interventions</h2> -->
-    <form method="POST">
-        <div class="container">
-            <div class="intervention-section">
-                <h3>Interventions</h3>
-                <!-- Manual intervention -->
-                <input type="radio" id="manual" name="Intervention" value="manual"
-                    {% if intervention == "manual" or intervention is none %}checked{% endif %}>
-                <label for="Manual">Manual</label>
-                <br>
-                <div id="manualInputs" class="radio-group" style="display: block;">
-                    <label for="co2_value">CO2 in tons (pos is emission) </label>
-                    <input type="number" name="co2_value" value="{{ co2_value }}">
-                    <br>
-                    <label for="ch4_value">CH4 in tons (pos is emission) </label>
-                    <input type="number" name="ch4_value" value="{{ ch4_value }}">
-                    <br>
-                    <label for="n2o_value">N2O in tons (pos is emission) </label>
-                    <input type="number" name="n2o_value" value="{{ n2o_value }}">
-                    <br><br>
-                </div>
-
-                <!-- CO2 mitigation intervention -->
-                <input type="radio" id="co2_mitigation" name="Intervention" value="co2_mitigation"
-                    {% if intervention == "co2_mitigation" %}checked{% endif %}>
-                <label for="co2Slider">CO2-intensive CH4 mitigation</label>
-                <br><br>
-                <div id="co2MitigationInputs" class="radio-group">
-                    <input type="range" name="co2_ch4_mit_value" min="0" max="100" value="{{ co2_ch4_mit_value }}" class="slider" id="co2Slider">
-                    <span id="co2_ch4_mit_value">50</span>
-                </div>
-                <br>
-
-                <!-- CH4 flux intervention -->
-                <input type="radio" id="ch4_flux" name="Intervention" value="ch4_flux"
-                    {% if intervention == "ch4_flux" %}checked{% endif %}>
-                <label for="Continuous CH4 flux (t/yr)">Continuous CH4 flux (t/yr)</label>
-                <br>
-                <div id="ch4FluxInputs" class="radio-group">
-                    <p>duration of emissions (yrs)</p>
-                    <input type="range" name="duration_value" min="0" max="100" value="{{ duration_value }}" class="slider" id="ch4Slider">
-                    <span id="duration_value">50</span>
-                    <br><br>
-                    <label for="tch4_yr">tCH4/yr </label>
-                    <input type="number" name="tch4_yr" value="{{ tch4_yr }}">
-                </div>
-                <br>
-
-                <!-- CO2 capture with leaky storage -->
-                <input type="radio" id="co2_capture" name="Intervention" value="co2_capture"
-                    {% if intervention == "co2_capture" %}checked{% endif %}>
-                <label for="CO2 capture with leaky storage">CO2 capture with leaky storage</label>
-                <br>
-                <div id="co2CaptureInputs" class="radio-group">
-                    <label for="co2_capture_year_1">CO2 capture in year 1 </label>
-                    <input type="number" name="co2_capture_year_1" value="{{ co2_capture_yr1 }}">
-                    <br>
-                    <input type="radio" id="linear_decay" name="CO2_Decay_Type" value="linear_decay"
-                    {% if decay_type == "linear_decay" %}checked{% endif %}>
-                    <label for="linear_decay">Linear Decay</label>
-                    <br>
-                    <div class="radio-subgroup">
-                        <label for="total_lifetime">Total lifetime (years) </label>
-                        <input type="number" name="total_lifetime" value="{{ total_lifetime }}">
-                    </div>
-                    <input type="radio" id="exponential_decay" name="CO2_Decay_Type" value="exponential_decay"
-                    {% if decay_type == "exponential_decay" %}checked{% endif %}>
-                    <label for="exponential_decay">Exponential Decay</label>
-                    <br>
-                    <div class="radio-subgroup">
-                        <label for="halflife">Half-life (years) </label>
-                        <input type="number" name="halflife" value="{{ halflife }}">
-                    </div>
-                </div>
-                <br>
-                <button type="submit">Update</button>
-            </div>
-
-            <div class="metrics-box">
-                <h3>Single-value metrics (select to plot equiv):</h3>
+    <div class="main-container">
+        <form method="POST">
+        <!-- Top display panel for AGWP and AGTP -->
+        <div class="top-display-panel">
+            <h2>Display Panel for aGWP and aGTP Plots</h2>
+            <img src="data:image/png;base64,{{ plot_url }}" alt="AGWP Plot">
+            <img src="data:image/png;base64,{{ plot_url2 }}" alt="AGTP Plot">
+            <div class="top-controls">
                 <label>
-                    <input type="radio" name="Metric" value="GWP100"
-                           {% if metric == "GWP100" %}checked{% endif %}>
-                    GWP100: XXXXXX tCO2e at t=0  </label>
-                <label>
-                    <input type="radio" name="Metric" value="GWP20"
-                           {% if metric == "GWP20" %}checked{% endif %}>
-                    GWP20: XXXXXX tCO2e at t=0  </label>
-                <label>
-                    <input type="radio" name="Metric" value="GTP100"
-                           {% if metric == "GTP100" %}checked{% endif %}>
-                    GTP100: XXXXXX tCO2e at t=0  </label>
-                <label>
-                    <input type="radio" name="Metric" value="GTP20"
-                           {% if metric == "GTP20" %}checked{% endif %}>
-                    GTP20: XXXXXX tCO2e at t=0  </label>
-                <label>
-                    <input type="radio" name="Metric" value="none"
-                           {% if metric == "none" or metric is none or metric == "" %}checked{% endif %}>
-                    None Plotted
+                    Metric:
+                    <select name="Metric">
+                        <option value="GWP100" {% if metric == "GWP100" %}selected{% endif %}>GWP100</option>
+                        <option value="GWP20" {% if metric == "GWP20" %}selected{% endif %}>GWP20</option>
+                        <option value="GTP100" {% if metric == "GTP100" %}selected{% endif %}>GTP100</option>
+                        <option value="GTP20" {% if metric == "GTP20" %}selected{% endif %}>GTP20</option>
+                        <option value="none" {% if metric == "none" %}selected{% endif %}>None Plotted</option>
+                    </select>
                 </label>
-                <!-- <h3>Scale input to unit metric</h3>
                 <label>
-                    <input type="checkbox" name="scale_input">
-                    (scales data and plots but leaves input boxes untouched)
-                </label> -->
+                    Scenario:
+                    <select name="scenarioSelect">
+                        <option value="SSP1-1.9" {% if scenario == "SSP1-1.9" %}selected{% endif %}>SSP1-1.9</option>
+                        <option value="SSP1-2.6" {% if scenario == "SSP1-2.6" %}selected{% endif %}>SSP1-2.6</option>
+                        <option value="SSP2-4.5" {% if scenario == "SSP2-4.5" %}selected{% endif %}>SSP2-4.5</option>
+                        <option value="SSP3-7.0" {% if scenario == "SSP3-7.0" %}selected{% endif %}>SSP3-7.0</option>
+                        <option value="SSP4-3.4_over" {% if scenario == "SSP4-3.4_over" %}selected{% endif %}>SSP4-3.4_over</option>
+                        <option value="SSP5-8.5" {% if scenario == "SSP5-8.5" %}selected{% endif %}>SSP5-8.5</option>
+                    </select>
+                </label>
+                <label>
+                    Year Start:
+                    <input type="number" name="year_intervention_start" value="{{ intervention_start }}">
+                </label>
+            </div>
+            <p style="font-size: 0.9em; color: #555;">Note: intervention curve is scaled by 5e9 to make the difference between the baseline SSP curve more visible.</p>
+        </div>
+
+        <!-- Bottom section with tabs -->
+        <div class="tabs-section">
+            <div class="tab-buttons">
+                <button type="button" onclick="showTab('intervention1')">Intervention 1</button>
+                <button type="button" onclick="showTab('intervention2')">Intervention 2</button>
             </div>
 
-            <div class="graphs">
-                <img src="data:image/png;base64,{{ plot_url }}" alt="First Plot">
-                <img src="data:image/png;base64,{{ plot_url2 }}" alt="Second Plot">
-                <div class="dropdown-container">
-                    <label for="scenarioSelect">
-                        Baseline Climate Scenario
-                        <select id="scenarioSelect" name="scenarioSelect">
-                            <option value="SSP1-1.9" {% if scenario == "SSP1-1.9" %}selected{% endif %}>SSP1-1.9</option>
-                            <option value="SSP1-2.6" {% if scenario == "SSP1-2.6" %}selected{% endif %}>SSP1-2.6</option>
-                            <option value="SSP2-4.5" {% if scenario == "SSP2-4.5" %}selected{% endif %}>SSP2-4.5</option>
-                            <option value="SSP3-7.0" {% if scenario == "SSP3-7.0" %}selected{% endif %}>SSP3-7.0</option>
-                            <option value="SSP4-3.4_over" {% if scenario == "SSP4-3.4_over" %}selected{% endif %}>SSP4-3.4_over</option>
-                            <option value="SSP5-8.5" {% if scenario == "SSP5-8.5" %}selected{% endif %}>SSP5-8.5</option>
-                        </select>
-                    </label>
-                    <label for="year_intervention_start">
-                        Year for Intervention Start
-                        <input type="number" name="year_intervention_start" value="{{ intervention_start }}">
-                    </label>
-                    Note: intervention curve is scaled by 5e9 to make the difference between the baseline ssp curve more visible
+            <div id="intervention1" class="tab-content active">
+                <div class="tab-grid">
+                    <!-- Left Panel: Radio Buttons -->
+                    <div class="panel-box">
+                        <h3>Intervention Types</h3>
+                        <input type="radio" id="manual" name="Intervention" value="manual" {% if intervention == "manual" or intervention is none %}checked{% endif %}> Manual<br>
+                        <input type="radio" id="co2_mitigation" name="Intervention" value="co2_mitigation" {% if intervention == "co2_mitigation" %}checked{% endif %}> CO2-intensive CH4 mitigation<br>
+                        <input type="radio" id="ch4_flux" name="Intervention" value="ch4_flux" {% if intervention == "ch4_flux" %}checked{% endif %}> Continuous CH4 flux<br>
+                        <input type="radio" id="co2_capture" name="Intervention" value="co2_capture" {% if intervention == "co2_capture" %}checked{% endif %}> CO2 capture with leaky storage
+                    </div>
+
+                    <!-- Middle Panel: Controls -->
+                    <div class="panel-box">
+                        <h3>Controls</h3>
+                        <!-- Manual Inputs -->
+                        <div id="manualControls" class="radio-group">
+                            <label>CO2 in tons: <input type="number" name="co2_value" value="{{ co2_value }}"></label><br>
+                            <label>CH4 in tons: <input type="number" name="ch4_value" value="{{ ch4_value }}"></label><br>
+                            <label>N2O in tons: <input type="number" name="n2o_value" value="{{ n2o_value }}"></label>
+                        </div>
+                        <br>
+                        <!-- CH4 mitigation slider -->
+                        <div id="co2MitigationControls" class="radio-group slider-container hidden">
+                            <label for="co2_ch4_mit_value">CH4 mitigation (%):</label>
+                            <input type="range" id="co2_ch4_mit_value" name="co2_ch4_mit_value" min="0" max="100" value="{{ co2_ch4_mit_value }}" class="slider" oninput="document.getElementById('mit_val_display').innerText = this.value">
+                            <span id="mit_val_display">{{ co2_ch4_mit_value }}</span>
+                        </div>
+                        <br>
+                        <!-- CH4 Flux -->
+                        <div id="ch4FluxControls" class="radio-group slider-container hidden">
+                            <label for="duration_value">Duration (yrs):</label>
+                            <input type="range" id="duration_value" name="duration_value" min="0" max="100" value="{{ duration_value }}" class="slider" oninput="document.getElementById('duration_val_display').innerText = this.value">
+                            <span id="duration_val_display">{{ duration_value }}</span>
+                            <label>tCH4/yr: <input type="number" name="tch4_yr" value="{{ tch4_yr }}"></label>
+                        </div>
+                        <br>
+                        <!-- CO2 Capture -->
+                        <div id="co2CaptureControls" class="radio-group hidden">
+                            <label>CO2 capture (year 1): <input type="number" name="co2_capture_year_1" value="{{ co2_capture_yr1 }}"></label><br>
+                            <input type="radio" name="CO2_Decay_Type" value="linear_decay" {% if decay_type == "linear_decay" %}checked{% endif %}> Linear Decay<br>
+                            <div class="radio-subgroup">
+                                Total lifetime (yrs): <input type="number" name="total_lifetime" value="{{ total_lifetime }}">
+                            </div>
+                            <input type="radio" name="CO2_Decay_Type" value="exponential_decay" {% if decay_type == "exponential_decay" %}checked{% endif %}> Exponential Decay<br>
+                            <div class="radio-subgroup">
+                                Half-life (yrs): <input type="number" name="halflife" value="{{ halflife }}">
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit">Update</button>
+                    </div>
+
+                    <!-- Right Panel: Emissions Plot -->
+                    <div class="panel-box">
+                        <h3>Emissions Plot</h3>
+                        <img src="data:image/png;base64,{{ plot_url4 }}" alt="Emissions Plot">
+                    </div>
                 </div>
-                <img src="data:image/png;base64,{{ plot_url3 }}" alt="Third Plot">
-                <img src="data:image/png;base64,{{ plot_url4 }}" alt="Fourth Plot">
+            </div>
+
+            <div id="intervention2" class="tab-content">
+                <!-- Optional second intervention area -->
+                <p>Future content here...</p>
             </div>
         </div>
-    </form>
+        </form>
+    </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const manual = document.getElementById("manual");
-        const co2Mitigation = document.getElementById("co2_mitigation");
-        const ch4Flux = document.getElementById("ch4_flux");
-        const co2Capture = document.getElementById("co2_capture");
-        const linearDecay = document.getElementById("linear_decay");
-        const exponentialDecay = document.getElementById("exponential_decay");
-
-        const co2Slider = document.getElementById("co2Slider");
-        const ch4Slider = document.getElementById("ch4Slider");
-
-        // Ensure one intervention is selected by default
-        if (!document.querySelector("input[name='Intervention']:checked")) {
-            manual.checked = true;
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
         }
 
-        // Update the displayed value for sliders
-        co2Slider.addEventListener("input", function() {
-            co2_ch4_mit_value.textContent = co2Slider.value;
-        });
+        function initializeSliderDisplays() {
+            const mitSlider = document.getElementById('co2_ch4_mit_value');
+            const mitDisplay = document.getElementById('mit_val_display');
+            if (mitSlider && mitDisplay) mitDisplay.innerText = mitSlider.value;
 
-        ch4Slider.addEventListener("input", function() {
-            duration_value.textContent = ch4Slider.value;
-        });
+            const durationSlider = document.getElementById('duration_value');
+            const durationDisplay = document.getElementById('duration_val_display');
+            if (durationSlider && durationDisplay) durationDisplay.innerText = durationSlider.value;
+        }
 
-        // Function to update visibility and enable/disable inputs
-        function updateVisibility() {
-            co2Slider.disabled = !co2Mitigation.checked;
-            ch4Slider.disabled = !ch4Flux.checked;
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeSliderDisplays();
 
-            const isCo2CaptureSelected = co2Capture.checked;
-            linearDecay.disabled = !isCo2CaptureSelected;
-            exponentialDecay.disabled = !isCo2CaptureSelected;
+            document.getElementById('co2_ch4_mit_value')?.addEventListener('input', function() {
+                document.getElementById('mit_val_display').innerText = this.value;
+            });
+            document.getElementById('duration_value')?.addEventListener('input', function() {
+                document.getElementById('duration_val_display').innerText = this.value;
+            });
 
-            if (!isCo2CaptureSelected) {
-                linearDecay.checked = false;
-                exponentialDecay.checked = false;
+            function updateControlVisibility(selected) {
+                const map = {
+                manual: "manualControls",
+                co2_mitigation: "co2MitigationControls",
+                ch4_flux: "ch4FluxControls",
+                co2_capture: "co2CaptureControls"
+                };
+                for (const [key, id] of Object.entries(map)) {
+                document.getElementById(id).classList.toggle("hidden", selected !== key);
+                }
             }
-        }
 
-        // Add event listeners to update visibility on change
-        document.querySelectorAll("input[name='Intervention']").forEach(input => {
-            input.addEventListener("change", updateVisibility);
+            const radios = document.querySelectorAll('input[name="Intervention"]');
+            radios.forEach(r => {
+                r.addEventListener("change", () => updateControlVisibility(r.value));
+                if (r.checked) updateControlVisibility(r.value);  // initialize on page load
+            });
         });
-
-        // Initialize visibility on page load
-        updateVisibility();
-    });
     </script>
-
 </body>
 </html>
+
