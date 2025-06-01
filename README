@@ -3,11 +3,10 @@ README
 This file is for documentation of the code
 Last Updated: 4/17/2025
 
-also function contracts
-and any relations between any files
-what is called in app.py
-what is used in app.py
-how helper functions are defined and where they are called
+How to run:
+- download the dependencies specified in the requirements.txt file
+- run the command: flask run
+- click on the link and have fun :)
 
 <Libraries>
 flask to host the web application
