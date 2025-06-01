@@ -56,6 +56,17 @@
             background-color: #cbeac1;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.2s, border 0.2s;
+        }
+
+        .tab-buttons button:hover {
+            background-color: #aed6a5;
+        }
+
+        .tab-buttons button.active {
+            background-color: #94c68b;
+            border: 2px solid #4d9246;
+            font-weight: bold;
         }
 
         .tab-content {
@@ -145,11 +156,15 @@
 <body>
     <div class="main-container">
         <form method="POST">
+
+        <input type="hidden" id="activeTab" name="activeTab" value="intervention1">
+
         <!-- Top display panel for AGWP and AGTP -->
         <div class="top-display-panel">
             <h2>Display Panel for aGWP and aGTP Plots</h2>
             <img src="data:image/png;base64,{{ plot_url }}" alt="AGWP Plot">
             <img src="data:image/png;base64,{{ plot_url2 }}" alt="AGTP Plot">
+            <img src="data:image/png;base64,{{ plot_url3 }}" alt="Scenario with Intervention Plot">
             <div class="top-controls">
                 <label>
                     Metric:
@@ -183,9 +198,15 @@
         <!-- Bottom section with tabs -->
         <div class="tabs-section">
             <div class="tab-buttons">
-                <button type="button" onclick="showTab('intervention1')">Intervention 1</button>
-                <button type="button" onclick="showTab('intervention2')">Intervention 2</button>
-            </div>
+                <button type="button" data-tab="intervention1"
+                    class="{% if active_tab == 'intervention1' %}active{% endif %}"
+                    onclick="showTab('intervention1')">Intervention 1</button>
+
+                <button type="button" data-tab="intervention2"
+                        class="{% if active_tab == 'intervention2' %}active{% endif %}"
+                        onclick="showTab('intervention2')">Intervention 2</button>
+
+              </div>
 
             <div id="intervention1" class="tab-content active">
                 <div class="tab-grid">
@@ -218,8 +239,11 @@
                         <!-- CH4 Flux -->
                         <div id="ch4FluxControls" class="radio-group slider-container hidden">
                             <label for="duration_value">Duration (yrs):</label>
-                            <input type="range" id="duration_value" name="duration_value" min="0" max="100" value="{{ duration_value }}" class="slider" oninput="document.getElementById('duration_val_display').innerText = this.value">
-                            <span id="duration_val_display">{{ duration_value }}</span>
+                            <input type="range" id="duration_value" name="duration_value"
+                                value="{{ duration }}" min="0" max="100" class="slider"
+                                oninput="document.getElementById('duration_val_display').innerText = this.value">
+                            <span id="duration_val_display">{{ duration }}</span>
+                            <br>
                             <label>tCH4/yr: <input type="number" name="tch4_yr" value="{{ tch4_yr }}"></label>
                         </div>
                         <br>
@@ -236,7 +260,7 @@
                             </div>
                         </div>
                         <br>
-                        <button type="submit">Update</button>
+                        <button type="submit" name="submit_source" value="intervention1">Update for Intervention 1</button>
                     </div>
 
                     <!-- Right Panel: Emissions Plot -->
@@ -248,8 +272,66 @@
             </div>
 
             <div id="intervention2" class="tab-content">
-                <!-- Optional second intervention area -->
-                <p>Future content here...</p>
+                <div class="tab-grid">
+                    <!-- Left Panel: Radio Buttons -->
+                    <div class="panel-box">
+                        <h3>Intervention Types</h3>
+                        <input type="radio" id="manual2" name="Intervention2" value="manual2" {% if intervention2 == "manual2" or intervention is none %}checked{% endif %}> Manual<br>
+                        <input type="radio" id="co2_mitigation2" name="Intervention2" value="co2_mitigation2" {% if intervention2 == "co2_mitigation2" %}checked{% endif %}> CO2-intensive CH4 mitigation<br>
+                        <input type="radio" id="ch4_flux2" name="Intervention2" value="ch4_flux2" {% if intervention2 == "ch4_flux2" %}checked{% endif %}> Continuous CH4 flux<br>
+                        <input type="radio" id="co2_capture2" name="Intervention2" value="co2_capture2" {% if intervention2 == "co2_capture2" %}checked{% endif %}> CO2 capture with leaky storage
+                    </div>
+
+                    <!-- Middle Panel: Controls -->
+                    <div class="panel-box">
+                        <h3>Controls</h3>
+                        <!-- Manual Inputs -->
+                        <div id="manualControls2" class="radio-group">
+                            <label>CO2 in tons: <input type="number" name="co2_value2" value="{{ co2_value2 }}"></label><br>
+                            <label>CH4 in tons: <input type="number" name="ch4_value2" value="{{ ch4_value2 }}"></label><br>
+                            <label>N2O in tons: <input type="number" name="n2o_value2" value="{{ n2o_value2 }}"></label>
+                        </div>
+                        <br>
+                        <!-- CH4 mitigation slider -->
+                        <div id="co2MitigationControls2" class="radio-group slider-container hidden">
+                            <label for="co2_ch4_mit_value2">CH4 mitigation (%):</label>
+                            <input type="range" id="co2_ch4_mit_value2" name="co2_ch4_mit_value2" min="0" max="100" value="{{ co2_ch4_mit_value2 }}" class="slider" oninput="document.getElementById('mit_val_display2').innerText = this.value">
+                            <span id="mit_val_display2">{{ co2_ch4_mit_value2 }}</span>
+                        </div>
+                        <br>
+                        <!-- CH4 Flux -->
+                        <div id="ch4FluxControls2" class="radio-group slider-container hidden">
+                            <label for="duration_value2">Duration (yrs):</label>
+                            <input type="range" id="duration_value2" name="duration_value2"
+                                value="{{ duration2 }}" min="0" max="100" class="slider"
+                                oninput="document.getElementById('duration_val_display2').innerText = this.value">
+                            <span id="duration_val_display2">{{ duration2 }}</span>
+                            <br>
+                            <label>tCH4/yr: <input type="number" name="tch4_yr2" value="{{ tch4_yr2 }}"></label>
+                        </div>
+                        <br>
+                        <!-- CO2 Capture -->
+                        <div id="co2CaptureControls2" class="radio-group hidden">
+                            <label>CO2 capture (year 1): <input type="number" name="co2_capture_year_1_2" value="{{ co2_capture_yr1_2 }}"></label><br>
+                            <input type="radio" name="CO2_Decay_Type2" value="linear_decay2" {% if decay_type2 == "linear_decay2" %}checked{% endif %}> Linear Decay<br>
+                            <div class="radio-subgroup">
+                                Total lifetime (yrs): <input type="number" name="total_lifetime2" value="{{ total_lifetime2 }}">
+                            </div>
+                            <input type="radio" name="CO2_Decay_Type2" value="exponential_decay2" {% if decay_type2 == "exponential_decay2" %}checked{% endif %}> Exponential Decay<br>
+                            <div class="radio-subgroup">
+                                Half-life (yrs): <input type="number" name="halflife2" value="{{ halflife2 }}">
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit" name="submit_source" value="intervention2">Update for Intervention 2</button>
+                    </div>
+
+                    <!-- Right Panel: Emissions Plot -->
+                    <div class="panel-box">
+                        <h3>Emissions Plot</h3>
+                        <img src="data:image/png;base64,{{ plot_url4 }}" alt="Emissions Plot">
+                    </div>
+                </div>
             </div>
         </div>
         </form>
@@ -257,20 +339,41 @@
 
     <script>
         function showTab(tabId) {
+            // Show selected tab content
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
             document.getElementById(tabId).classList.add('active');
+
+            // Highlight selected tab button
+            document.querySelectorAll('.tab-buttons button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const tabButton = document.querySelector(`.tab-buttons button[data-tab="${tabId}"]`);
+            if (tabButton) tabButton.classList.add('active');
+
+            // Set hidden input value
+            const tabInput = document.getElementById('activeTab');
+            if (tabInput) tabInput.value = tabId;
         }
+
 
         function initializeSliderDisplays() {
             const mitSlider = document.getElementById('co2_ch4_mit_value');
             const mitDisplay = document.getElementById('mit_val_display');
             if (mitSlider && mitDisplay) mitDisplay.innerText = mitSlider.value;
 
+            const mitSlider2 = document.getElementById('co2_ch4_mit_value2');
+            const mitDisplay2 = document.getElementById('mit_val_display2');
+            if (mitSlider2 && mitDisplay2) mitDisplay2.innerText = mitSlider2.value;
+
             const durationSlider = document.getElementById('duration_value');
             const durationDisplay = document.getElementById('duration_val_display');
             if (durationSlider && durationDisplay) durationDisplay.innerText = durationSlider.value;
+
+            const durationSlider2 = document.getElementById('duration_value2');
+            const durationDisplay2 = document.getElementById('duration_val_display2');
+            if (durationSlider2 && durationDisplay2) durationDisplay2.innerText = durationSlider2.value;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -285,23 +388,52 @@
 
             function updateControlVisibility(selected) {
                 const map = {
-                manual: "manualControls",
-                co2_mitigation: "co2MitigationControls",
-                ch4_flux: "ch4FluxControls",
-                co2_capture: "co2CaptureControls"
+                    manual: "manualControls",
+                    co2_mitigation: "co2MitigationControls",
+                    ch4_flux: "ch4FluxControls",
+                    co2_capture: "co2CaptureControls"
                 };
                 for (const [key, id] of Object.entries(map)) {
-                document.getElementById(id).classList.toggle("hidden", selected !== key);
+                    document.getElementById(id).classList.toggle("hidden", selected !== key);
                 }
             }
 
+            function updateControlVisibility2(selected) {
+                const map = {
+                    manual2: "manualControls2",
+                    co2_mitigation2: "co2MitigationControls2",
+                    ch4_flux2: "ch4FluxControls2",
+                    co2_capture2: "co2CaptureControls2"
+                };
+                for (const [key, id] of Object.entries(map)) {
+                    document.getElementById(id).classList.toggle("hidden", selected !== key);
+                }
+            }
+
+            // Initialize visibility based on the selected radio button
             const radios = document.querySelectorAll('input[name="Intervention"]');
             radios.forEach(r => {
                 r.addEventListener("change", () => updateControlVisibility(r.value));
                 if (r.checked) updateControlVisibility(r.value);  // initialize on page load
             });
+
+            // Attach listeners to Intervention 2 radio buttons
+            const radios2 = document.querySelectorAll('input[name="Intervention2"]');
+            radios2.forEach(r => {
+                r.addEventListener("change", () => updateControlVisibility2(r.value));
+                if (r.checked) updateControlVisibility2(r.value);  // initialize on page load
+            });
+
+            // Dynamically select tab based on backend state
+            const activeTab = "{{ active_tab }}";
+            if (activeTab === "intervention1" || activeTab === "intervention2") {
+                showTab(activeTab);
+            } else {
+                showTab("intervention1");  // fallback for GET page load
+            }
         });
     </script>
+
 </body>
 </html>
 

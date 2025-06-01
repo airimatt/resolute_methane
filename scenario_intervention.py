@@ -66,7 +66,7 @@ def plot_scenario_intervention(scenario, intervention_start, agtp_net_plot, co2e
     lines.append((x_range, intervention1, f"Intervention 1"))
     if metric != "none": lines.append((x_range, co2e, f"CO2e"))
 
-    plt.figure(figsize=(10, 8))
+    plt.figure(figsize=(6, 4))
 
     plt.scatter(years_historical, historical_obs, color='black', marker='.', label='Historical Obs.')
 
